@@ -1,0 +1,63 @@
+#ifndef IMU_H
+#define IMU_H
+
+#include <iostream>
+#include <vector>
+#include <fstream>
+//#include<Eigen/Core>
+#include<sophus/se3.h>
+//#include <sophus/sim3.cpp>
+#include <svo/frame.h>
+#include "eigen_utils.h"
+namespace svo
+{
+
+using namespace std;
+using namespace Eigen;
+
+class IMU
+{
+    private:
+        double imu_delta_t, last_imu_delta_t;//imu sample period
+	const Matrix<double,3,1> earth_acc;
+	const Matrix<double,3,1> earth_omega;
+	Matrix<double,3,1> ba, bg;
+	SE3* T_imu_cam;
+	Quaternion<double> q_imu2ground;
+    public:
+        Matrix<double,3,1> earth_acc_in_w;
+        Matrix<double,3,1> earth_omega_in_w;
+	Quaternion<double> q_new, q_old;
+	Matrix<double,3,1> r_new, r_old;
+	Matrix<double,3,1> v_old, v_new;
+  	SE3 T_test;
+	
+	double t_imu;//timestamp of imu
+	double delta_t;//equal to imu_delta_t in common, be used to do integration
+	vector<vector<double> > imu_measurements;
+ 	vector<double> last_measurement;
+	vector<double> measurement;//store imu measurement
+	ifstream imu_data;//csv file of imu
+	ifstream pic_data;//csv file of dataset
+	ifstream imu_data_;
+	double pic_timestamp;
+	double pic_last_timestamp;
+	Matrix<double,3,1> acc;//acceleration measured by imu
+	Matrix<double,3,1> omega;//angle velocity measured by imu
+
+        //Euler
+	double heading, attitude, bank;
+    private:
+	void get_pic_timestamp(); 
+    public:
+	IMU();
+	void sync();
+	void load_imu_data();
+	void calculate_pose(Frame* new_frame, Frame* last_frame);
+	void integration(const vector<double>& imu_data);
+        void trans_to_Euler(Quaternion<double> q);
+};
+
+}
+
+#endif

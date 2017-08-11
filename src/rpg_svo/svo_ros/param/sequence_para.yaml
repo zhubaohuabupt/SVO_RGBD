@@ -1,0 +1,28 @@
+grid_size: 20
+max_n_kfs: 10000
+loba_num_iter: 1000
+max_fts: 4000
+newKF_ratio: 0.8
+show_cput_Resident_mssage: false
+display_Gradpiont_: false
+display_Residuals_: false
+                                            
+
+change_pyr_ratio_: true
+pyr_ratio_: 0.5
+
+   
+align_only_: false
+Align_every_level_by_ItsOwns_Point_: true
+
+My_grad_size: 16
+Want_piont_num: 2000
+Constant_thred: 8
+gridsize_down_ratio_: 2
+
+depth_min_th: 0.3
+depth_max_th: 100
+
+process_pic_start: 25
+process_pic_end: 3000
+

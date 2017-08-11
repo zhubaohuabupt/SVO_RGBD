@@ -1,0 +1,27 @@
+<launch>
+
+  <node pkg="svo_ros" type="benchmark" name="svo" clear_params="true" output="screen">
+
+    <!-- Camera topic to subscribe to -->
+    <param name="cam_topic" value="/camera/image_raw" type="str" />
+
+ 
+    <param name="dataset_directory" value="/media/baohua/study/927/salmdata/sequence00" type="str" />
+
+    <param name="dataset_first_frame" value="frame_000002_0.png" type="str" />
+    <!--choose the source of depth,you can change the value "SGBM" or "MoveSense"-->
+    <param name="Depth_source" value="SGBM" type="str" /> 
+    <!-- Camera calibration file -->
+    <rosparam file="$(find svo_ros)/param/sequence.yaml" />
+
+    <!-- Default parameter settings: choose between vo_fast and vo_accurate -->
+    <rosparam file="$(find svo_ros)/param/sequence_para.yaml" />
+    
+    <!-- Initial camera orientation, make it point downwards -->
+    <param name="init_rx" value="1.57" />
+    <param name="init_ry" value="0.00" />
+    <param name="init_rz" value="0.00" />
+  </node>
+<node pkg="rviz" type="rviz" name="rviz" args="-d $(find svo_ros)/rviz_config.rviz" output="log">
+   </node>
+</launch>
